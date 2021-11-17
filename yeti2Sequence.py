@@ -1,4 +1,4 @@
-#!/usr/bin/env python #Michelle was here
+#!/usr/bin/env python
 # coding: Latin-1
 
 # Simple example of a motor sequence script
