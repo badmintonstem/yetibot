@@ -31,8 +31,9 @@ try:
         for sensor in sensors:
             lineFollowList.append(GPIO.input(sensor))
         lineResult = int("".join(str(i) for i in lineFollowList),2)
+        print(lineResult)
         #If the sensor is Low (=0), it's above the black line
-        driveRobot(lineList[lineResult][1],lineList[lineResult][2])
+        #driveRobot(lineList[lineResult][1],lineList[lineResult][2])
 
     # Wait, then do the same again
     time.sleep(0.2)
