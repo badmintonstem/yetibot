@@ -3,11 +3,7 @@
 
 # Simple example of a motor sequence script
 
-# Set pin 25 as an input so we can read its value
-GPIO.setup(pinLineFollowerCentre, GPIO.IN)
-GPIO.setup(pinLineFollowerLeft, GPIO.IN)
-GPIO.setup(pinLineFollowerRight, GPIO.IN)
-sensors = [pinLineFollowerLeft,pinLineFollowerCentre,pinLineFollowerRight]
+
 # Import library functions we need
 import ZeroBorg
 import time
@@ -19,10 +15,18 @@ import RPi.GPIO as GPIO  # Import the GPIO Library
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
+
+
 # Set variables for the GPIO pins
 pinLineFollowerCentre = 24
 pinLineFollowerLeft = 23
 pinLineFollowerRight = 25
+
+# Set pin 25 as an input so we can read its value
+GPIO.setup(pinLineFollowerCentre, GPIO.IN)
+GPIO.setup(pinLineFollowerLeft, GPIO.IN)
+GPIO.setup(pinLineFollowerRight, GPIO.IN)
+sensors = [pinLineFollowerLeft,pinLineFollowerCentre,pinLineFollowerRight]
 
 # Setup the ZeroBorg
 ZB = ZeroBorg.ZeroBorg()
