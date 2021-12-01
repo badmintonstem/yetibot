@@ -9,7 +9,7 @@ ZB = ZeroBorg.ZeroBorg()
 ZB.Init()
 # User code here, use ZB to control the board
 
-Multiple boards can be used when configured with different I²C addresses by creating multiple instances, e.g.
+Multiple boards can be used when configured with different Iï¿½C addresses by creating multiple instances, e.g.
 import ZeroBorg
 ZB1 = ZeroBorg.ZeroBorg()
 ZB2 = ZeroBorg.ZeroBorg()
@@ -86,11 +86,11 @@ def ScanForZeroBorg(busNumber = 1):
     """
 ScanForZeroBorg([busNumber])
 
-Scans the I²C bus for a ZeroBorg boards and returns a list of all usable addresses
-The busNumber if supplied is which I²C bus to scan, 0 for Rev 1 boards, 1 for Rev 2 boards, if not supplied the default is 1
+Scans the Iï¿½C bus for a ZeroBorg boards and returns a list of all usable addresses
+The busNumber if supplied is which Iï¿½C bus to scan, 0 for Rev 1 boards, 1 for Rev 2 boards, if not supplied the default is 1
     """
     found = []
-    print 'Scanning I²C bus #%d' % (busNumber)
+    print ('Scanning Iï¿½C bus #%d' % (busNumber))
     bus = ZeroBorg()
     for address in range(0x03, 0x78, 1):
         try:
@@ -98,7 +98,7 @@ The busNumber if supplied is which I²C bus to scan, 0 for Rev 1 boards, 1 for Re
             i2cRecv = bus.RawRead(COMMAND_GET_ID, I2C_NORM_LEN)
             if len(i2cRecv) == I2C_NORM_LEN:
                 if i2cRecv[1] == I2C_ID_ZEROBORG:
-                    print 'Found ZeroBorg at %02X' % (address)
+                    print ('Found ZeroBorg at %02X' % (address))
                     found.append(address)
                 else:
                     pass
@@ -109,11 +109,11 @@ The busNumber if supplied is which I²C bus to scan, 0 for Rev 1 boards, 1 for Re
         except:
             pass
     if len(found) == 0:
-        print 'No ZeroBorg boards found, is bus #%d correct (should be 0 for Rev 1, 1 for Rev 2)' % (busNumber)
+        print ('No ZeroBorg boards found, is bus #%d correct (should be 0 for Rev 1, 1 for Rev 2)' % (busNumber))
     elif len(found) == 1:
-        print '1 ZeroBorg board found'
+        print ('1 ZeroBorg board found')
     else:
-        print '%d ZeroBorg boards found' % (len(found))
+        print ('%d ZeroBorg boards found' % (len(found)))
     return found
 
 
@@ -121,25 +121,25 @@ def SetNewAddress(newAddress, oldAddress = -1, busNumber = 1):
     """
 SetNewAddress(newAddress, [oldAddress], [busNumber])
 
-Scans the I²C bus for the first ZeroBorg and sets it to a new I2C address
+Scans the Iï¿½C bus for the first ZeroBorg and sets it to a new I2C address
 If oldAddress is supplied it will change the address of the board at that address rather than scanning the bus
-The busNumber if supplied is which I²C bus to scan, 0 for Rev 1 boards, 1 for Rev 2 boards, if not supplied the default is 1
-Warning, this new I²C address will still be used after resetting the power on the device
+The busNumber if supplied is which Iï¿½C bus to scan, 0 for Rev 1 boards, 1 for Rev 2 boards, if not supplied the default is 1
+Warning, this new Iï¿½C address will still be used after resetting the power on the device
     """
     if newAddress < 0x03:
-        print 'Error, I²C addresses below 3 (0x03) are reserved, use an address between 3 (0x03) and 119 (0x77)'
+        print ('Error, Iï¿½C addresses below 3 (0x03) are reserved, use an address between 3 (0x03) and 119 (0x77)')
         return
     elif newAddress > 0x77:
-        print 'Error, I²C addresses above 119 (0x77) are reserved, use an address between 3 (0x03) and 119 (0x77)'
+        print ('Error, Iï¿½C addresses above 119 (0x77) are reserved, use an address between 3 (0x03) and 119 (0x77)')
         return
     if oldAddress < 0x0:
         found = ScanForZeroBorg(busNumber)
         if len(found) < 1:
-            print 'No ZeroBorg boards found, cannot set a new I²C address!'
+            print ('No ZeroBorg boards found, cannot set a new Iï¿½C address!')
             return
         else:
             oldAddress = found[0]
-    print 'Changing I²C address from %02X to %02X (bus #%d)' % (oldAddress, newAddress, busNumber)
+    print ('Changing Iï¿½C address from %02X to %02X (bus #%d)' % (oldAddress, newAddress, busNumber))
     bus = ZeroBorg()
     bus.InitBusOnly(busNumber, oldAddress)
     try:
@@ -147,44 +147,44 @@ Warning, this new I²C address will still be used after resetting the power on th
         if len(i2cRecv) == I2C_NORM_LEN:
             if i2cRecv[1] == I2C_ID_ZEROBORG:
                 foundChip = True
-                print 'Found ZeroBorg at %02X' % (oldAddress)
+                print ('Found ZeroBorg at %02X' % (oldAddress))
             else:
                 foundChip = False
-                print 'Found a device at %02X, but it is not a ZeroBorg (ID %02X instead of %02X)' % (oldAddress, i2cRecv[1], I2C_ID_ZEROBORG)
+                print ('Found a device at %02X, but it is not a ZeroBorg (ID %02X instead of %02X)' % (oldAddress, i2cRecv[1], I2C_ID_ZEROBORG))
         else:
             foundChip = False
-            print 'Missing ZeroBorg at %02X' % (oldAddress)
+            print ('Missing ZeroBorg at %02X' % (oldAddress))
     except KeyboardInterrupt:
         raise
     except:
         foundChip = False
-        print 'Missing ZeroBorg at %02X' % (oldAddress)
+        print ('Missing ZeroBorg at %02X' % (oldAddress))
     if foundChip:
         bus.RawWrite(COMMAND_SET_I2C_ADD, [newAddress])
         time.sleep(0.1)
-        print 'Address changed to %02X, attempting to talk with the new address' % (newAddress)
+        print ('Address changed to %02X, attempting to talk with the new address' % (newAddress))
         try:
             bus.InitBusOnly(busNumber, newAddress)
             i2cRecv = bus.RawRead(COMMAND_GET_ID, I2C_NORM_LEN)
             if len(i2cRecv) == I2C_NORM_LEN:
                 if i2cRecv[1] == I2C_ID_ZEROBORG:
                     foundChip = True
-                    print 'Found ZeroBorg at %02X' % (newAddress)
+                    print ('Found ZeroBorg at %02X' % (newAddress))
                 else:
                     foundChip = False
-                    print 'Found a device at %02X, but it is not a ZeroBorg (ID %02X instead of %02X)' % (newAddress, i2cRecv[1], I2C_ID_ZEROBORG)
+                    print ('Found a device at %02X, but it is not a ZeroBorg (ID %02X instead of %02X)' % (newAddress, i2cRecv[1], I2C_ID_ZEROBORG))
             else:
                 foundChip = False
-                print 'Missing ZeroBorg at %02X' % (newAddress)
+                print ('Missing ZeroBorg at %02X' % (newAddress))
         except KeyboardInterrupt:
             raise
         except:
             foundChip = False
-            print 'Missing ZeroBorg at %02X' % (newAddress)
+            print ('Missing ZeroBorg at %02X' % (newAddress))
     if foundChip:
-        print 'New I²C address of %02X set successfully' % (newAddress)
+        print ('New Iï¿½C address of %02X set successfully' % (newAddress))
     else:
-        print 'Failed to set new I²C address...'
+        print ('Failed to set new Iï¿½C address...')
 
 
 # Class used to control ZeroBorg
@@ -192,16 +192,16 @@ class ZeroBorg:
     """
 This module is designed to communicate with the ZeroBorg
 
-busNumber               I²C bus on which the ZeroBorg is attached (Rev 1 is bus 0, Rev 2 is bus 1)
-bus                     the smbus object used to talk to the I²C bus
-i2cAddress              The I²C address of the ZeroBorg chip to control
+busNumber               Iï¿½C bus on which the ZeroBorg is attached (Rev 1 is bus 0, Rev 2 is bus 1)
+bus                     the smbus object used to talk to the Iï¿½C bus
+i2cAddress              The Iï¿½C address of the ZeroBorg chip to control
 foundChip               True if the ZeroBorg chip can be seen, False otherwise
 printFunction           Function reference to call when printing text, if None "print" is used
     """
 
     # Shared values used by this class
     busNumber               = 1                 # Check here for Rev 1 vs Rev 2 and select the correct bus
-    i2cAddress              = I2C_ID_ZEROBORG   # I²C address, override for a different address
+    i2cAddress              = I2C_ID_ZEROBORG   # Iï¿½C address, override for a different address
     foundChip               = False
     printFunction           = None
     i2cWrite                = None
@@ -273,7 +273,7 @@ Print(message)
 Wrapper used by the ZeroBorg instance to print messages, will call printFunction if set, print otherwise
         """
         if self.printFunction == None:
-            print message
+            print (message)
         else:
             self.printFunction(message)
 
@@ -922,8 +922,8 @@ Displays the names and descriptions of the various functions and settings provid
         funcList = [ZeroBorg.__dict__.get(a) for a in dir(ZeroBorg) if isinstance(ZeroBorg.__dict__.get(a), types.FunctionType)]
         funcListSorted = sorted(funcList, key = lambda x: x.func_code.co_firstlineno)
 
-        print self.__doc__
-        print
+        print (self.__doc__)
+        print()
         for func in funcListSorted:
-            print '=== %s === %s' % (func.func_name, func.func_doc)
+            print ('=== %s === %s' % (func.func_name, func.func_doc))
 
