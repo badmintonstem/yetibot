@@ -72,7 +72,7 @@ def setDrive(driveLeft, driveRight):
 
 #List of motor speeds given sensor outputs
 #lineList = [["spin around",-1,1],["gentle left",0.7,1],["error",0,0],["hard left",0.5,1],["gentle right",1,0.7],["straight on",1,1],["hard right",1,0.5],["lost",0,0]]
-linelist = [["lost",0,0],["gentle left",0.7,1],["error",0,0],["hard left",0.5,1],["gentle right",1,0.7],["straight on",1,1], ["hard right",1,0.5], ["spin around",-1,1]]
+lineList = [["lost",0,0],["gentle left",0.7,1],["error",0,0],["hard left",0.5,1],["gentle right",1,0.7],["straight on",1,1], ["hard right",1,0.5], ["spin around",-1,1]]
 try:
     # Repeat the next indented block forever
     while True:
