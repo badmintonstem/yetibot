@@ -73,6 +73,7 @@ def setDrive(driveLeft, driveRight):
 #List of motor speeds given sensor outputs
 #lineList = [["spin around",-1,1],["gentle left",0.7,1],["error",0,0],["hard left",0.5,1],["gentle right",1,0.7],["straight on",1,1],["hard right",1,0.5],["lost",0,0]]
 lineList = [["spin around",-1,1], ["hard right",1,0.5], ["straight on",1,1], ["gentle right",1,0.7], ["hard left",0.5,1], ["error",0,0], ["gentle left",0.7,1],["lost",0,0]]
+
 try:
     # Repeat the next indented block forever
     while True:
@@ -83,11 +84,12 @@ try:
         lineResult = int("".join(str(i) for i in lineFollowList),2) #gives base10('110')=6 or base10('001')=1 etc depending on sensor output
         #If the sensor is Low (=0), it's above the black line
 
-        setDrive(lineList[lineResult][1],lineList[lineResult][2])
+        setDrive(speedMultiplier*lineList[lineResult][1],speedMultiplier*lineList[lineResult][2])
 
         # Wait, then do the same again
-        time.sleep(0.2)
+        #time.sleep(0.2)
 
 # If you press CTRL+C, cleanup and stop
 except KeyboardInterrupt:
+    setDrive(0,0)
     GPIO.cleanup()
