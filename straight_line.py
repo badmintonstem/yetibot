@@ -19,10 +19,10 @@ def get_walls():
             break
     error = distance1_in_mm - distance2_in_mm
     try:
-    	error_factor = error/(distance1_in_mm + distance2_in_mm)
+        error_factor = error/(distance1_in_mm + distance2_in_mm)
     except:
-	print("sensor error")
-	error_factor = 2.000
+        print("sensor error")
+        error_factor = 2.000
     print("The distance is {}mm".format(distance1_in_mm))
     print("The distance is {}mm".format(distance2_in_mm))
     print("The errorfactor is {:.3f}".format(error_factor))
@@ -38,13 +38,14 @@ def speed_calc(err,fullv):
     else:
         return [0,0]
 
-while True:
-    try:
-        a = get_walls()
-        motorspeeds = speed_calc(a,full_speed)
-        print(motorspeeds)
-    except KeyboardInterrupt:
-        print("quitting")
-        tof1.stop_ranging()
-        tof2.stop_ranging()
-        sys.exit()
+if __name__ == "__main__":
+    while True:
+        try:
+            a = get_walls()
+            motorspeeds = speed_calc(a,full_speed)
+            print(motorspeeds)
+        except KeyboardInterrupt:
+            print("quitting")
+            tof1.stop_ranging()
+            tof2.stop_ranging()
+            sys.exit()
